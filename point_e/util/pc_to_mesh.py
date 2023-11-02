@@ -12,7 +12,7 @@ from .point_cloud import PointCloud
 
 
 def marching_cubes_mesh(
-    pc: PointCloud,
+    pc: np.ndarray,
     model: PointCloudSDFModel,
     batch_size: int = 4096,
     grid_size: int = 128,
@@ -42,7 +42,7 @@ def marching_cubes_mesh(
 
     with torch.no_grad():
         cond = model.encode_point_clouds(
-            torch.from_numpy(pc.coords).permute(1, 0).to(model.device)[None]
+            torch.from_numpy(pc).permute(1, 0).to(model.device)[None]
         )
 
     indices = range(0, grid_size**3, batch_size)
@@ -87,7 +87,7 @@ def marching_cubes_mesh(
         verts=verts,
         faces=faces,
         normals=normals,
-        vertex_channels=None if not fill_vertex_channels else _nearest_vertex_channels(pc, verts),
+        vertex_channels=None,
     )
 
 
