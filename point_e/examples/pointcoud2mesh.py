@@ -61,6 +61,8 @@ if __name__ == '__main__':
     obj_paths = glob.glob(os.path.join(args.gt_folder, '*.obj'))
     print(f"Found {len(obj_paths)} meshes in {args.gt_folder}")
 
+    os.makedirs(args.output_folder, exist_ok=True)
+
     for obj_path in obj_paths:
         id = os.path.basename(obj_path)[:-4]
         print("Processing : ", id)
