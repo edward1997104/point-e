@@ -59,6 +59,7 @@ if __name__ == '__main__':
 
     # Check meshes in gt_folder
     obj_paths = glob.glob(os.path.join(args.gt_folder, '*.obj'))
+    print(f"Found {len(obj_paths)} meshes in {args.gt_folder}")
 
     for obj_path in obj_paths:
         id = os.path.basename(obj_path)[:-4]
@@ -67,6 +68,7 @@ if __name__ == '__main__':
         # Load point cloud
         mesh = trimesh.load(obj_path, force = 'mesh')
         pc = mesh.sample(args.point_num)
+        pc = np.array(pc, dtype = np.float32)
 
         # Produce a mesh (without vertex colors)
         mesh = marching_cubes_mesh(
