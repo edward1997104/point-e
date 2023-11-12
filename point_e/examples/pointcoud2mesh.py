@@ -16,6 +16,16 @@ import glob
 import tyro
 import os
 
+def scale_to_unit_cube(mesh, scale_ratio = 0.9):
+    if isinstance(mesh, trimesh.Scene):
+        mesh = mesh.dump().sum()
+
+    vertices = mesh.vertices - mesh.bounding_box.centroid
+    vertices *= 2 / np.max(mesh.bounding_box.extents)
+    vertices *= scale_ratio
+
+    return trimesh.Trimesh(vertices=vertices, faces=mesh.faces)
+
 @dataclass
 class Args:
     gt_folder : str
@@ -69,6 +79,7 @@ if __name__ == '__main__':
 
         # Load point cloud
         mesh = trimesh.load(obj_path, force = 'mesh')
+        mesh = scale_to_unit_cube(mesh, scale_ratio=0.5)
         pc = mesh.sample(args.point_num)
         pc = np.array(pc, dtype = np.float32)
 
