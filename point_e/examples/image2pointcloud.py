@@ -8,6 +8,10 @@ from point_e.models.download import load_checkpoint
 from point_e.models.configs import MODEL_CONFIGS, model_from_config
 from point_e.util.plotting import plot_point_cloud
 import trimesh
+import os
+import numpy as np
+import math
+import boto3
 
 def scale_to_unit_cube(mesh, scale_ratio = 0.9):
     if isinstance(mesh, trimesh.Scene):
