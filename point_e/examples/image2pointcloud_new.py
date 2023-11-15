@@ -190,8 +190,7 @@ def process_one(img, model, sampler, cuda_id):
 
 if __name__ == '__main__':
 
-    output_dir = 'pointe-mesh-output'
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(args.output_dir, exist_ok=True)
 
 
     with open(args.file_path_pickle, 'rb') as f:
