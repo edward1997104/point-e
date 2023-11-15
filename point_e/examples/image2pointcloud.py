@@ -13,6 +13,7 @@ import numpy as np
 import math
 import boto3
 import tempfile
+import cloudpathlib
 
 def scale_to_unit_cube(mesh, scale_ratio = 0.9):
     if isinstance(mesh, trimesh.Scene):
