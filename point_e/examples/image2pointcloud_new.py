@@ -18,6 +18,7 @@ import cloudpathlib
 from dataclasses import dataclass
 import tyro
 import multiprocessing
+import pickle
 
 @dataclass
 class Args:
