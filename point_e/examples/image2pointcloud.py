@@ -117,10 +117,10 @@ if __name__ == '__main__':
             for x in tqdm(sampler.sample_batch_progressive(batch_size=1, model_kwargs=dict(images=[img]))):
                 samples = x
 
-            pc = sampler.output_to_point_clouds(samples)[0].detach().cpu().numpy()
+            pc = sampler.output_to_point_clouds(samples)[0]
 
             mesh = marching_cubes_mesh(
-                pc=samples,
+                pc=pc.coords,
                 model=model,
                 batch_size=4096,
                 grid_size=128,  # increase to 128 for resolution used in evals
