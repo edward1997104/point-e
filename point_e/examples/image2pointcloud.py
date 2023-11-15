@@ -67,23 +67,10 @@ def worker(
     worker_idx : int
 ) -> None:
 
-    while True:
-        item = queue.get()
-        if item is None:
-            break
-        try:
-            process_one(item, worker_idx % args.cuda_cnt)
-        except Exception as e:
-            print(e)
-        queue.task_done()
-        with count.get_lock():
-            count.value += 1
-
-def process_one(img, cuda_id):
+    cuda_id = worker_idx % args.cuda_cnt
     torch.cuda.set_device(f'cuda:{cuda_id}')
     device = torch.device(f'cuda:{cuda_id}')
     os.environ['CUDA_VISIBLE_DEVICES'] = str(cuda_id)
-
 
     print('creating base model...')
     base_name = 'base40M'  # use base300M or base1B for better results
@@ -118,6 +105,25 @@ def process_one(img, cuda_id):
         aux_channels=['R', 'G', 'B'],
         guidance_scale=[3.0, 3.0],
     )
+
+    while True:
+        item = queue.get()
+        if item is None:
+            break
+        try:
+            process_one(item, model, sampler, cuda_id)
+        except Exception as e:
+            print(e)
+        queue.task_done()
+        with count.get_lock():
+            count.value += 1
+
+def process_one(img, model, sampler, cuda_id):
+
+    torch.cuda.set_device(f'cuda:{cuda_id}')
+    device = torch.device(f'cuda:{cuda_id}')
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(cuda_id)
+
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         print("start processing: ", img)
