@@ -145,9 +145,6 @@ def process_one(img, cuda_id):
             fill_vertex_channels=False,
         )
         mesh = trimesh.Trimesh(vertices=mesh.verts, faces=mesh.faces)
-
-        mesh = mesh.tri_mesh()
-        mesh = trimesh.Trimesh(vertices=mesh.verts, faces=mesh.faces)
         mesh = rotate_around_axis(mesh, axis='x', reverse=False)
 
         mesh.export(os.path.join(args.output, f'{id}.obj'))
