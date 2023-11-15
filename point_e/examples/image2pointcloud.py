@@ -83,7 +83,6 @@ def process_one(img, cuda_id):
     torch.cuda.set_device(f'cuda:{cuda_id}')
     device = torch.device(f'cuda:{cuda_id}')
     os.environ['CUDA_VISIBLE_DEVICES'] = str(cuda_id)
-    os.environ['BLENDER_PATH'] = args.blender_path
 
 
     print('creating base model...')
