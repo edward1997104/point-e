@@ -147,7 +147,7 @@ def process_one(img, cuda_id):
         mesh = trimesh.Trimesh(vertices=mesh.verts, faces=mesh.faces)
         mesh = rotate_around_axis(mesh, axis='x', reverse=False)
 
-        mesh.export(os.path.join(args.output, f'{id}.obj'))
+        mesh.export(os.path.join(args.output_dir, f'{id}.obj'))
 
 
 
