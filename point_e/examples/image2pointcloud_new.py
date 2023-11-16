@@ -147,7 +147,7 @@ img_bucket_mapping = {
 def process_one(img, model, sampler, cuda_id):
 
     dataset, id = img
-    dataset = dataset.replace("_wavelet_latents", f'_renders_{args.render_resolution}')
+    dataset = dataset.replace("_wavelet_latents", f'_renders_{args.render_resolution}').repalce("_fixed", "")
     bucket = img_bucket_mapping[dataset]
 
 
@@ -155,6 +155,12 @@ def process_one(img, model, sampler, cuda_id):
     torch.cuda.set_device(f'cuda:{cuda_id}')
     device = torch.device(f'cuda:{cuda_id}')
     os.environ['CUDA_VISIBLE_DEVICES'] = str(cuda_id)
+
+    obj_path = os.path.join(args.output_dir, f'{id}.obj')
+    if os.path.exists(obj_path):
+        print("File exists: ", obj_path)
+        return
+
 
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -184,7 +190,7 @@ def process_one(img, model, sampler, cuda_id):
         mesh = trimesh.Trimesh(vertices=mesh.verts, faces=mesh.faces)
         mesh = rotate_around_axis(mesh, axis='x', reverse=False)
 
-        mesh.export(os.path.join(args.output_dir, f'{id}.obj'))
+        mesh.export(obj_path)
 
 
 
