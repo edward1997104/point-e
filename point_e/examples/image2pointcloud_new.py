@@ -147,7 +147,7 @@ img_bucket_mapping = {
 def process_one(img, model, sampler, cuda_id):
 
     dataset, id = img
-    dataset = dataset.replace("_wavelet_latents", f'_renders_{args.render_resolution}').repalce("_fixed", "")
+    dataset = dataset.replace("_wavelet_latents", f'_renders_{args.render_resolution}').replace("_fixed", "")
     bucket = img_bucket_mapping[dataset]
 
 
