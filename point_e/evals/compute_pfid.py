@@ -8,6 +8,7 @@ import numpy as np
 import glob
 import trimesh
 import os
+import math
 from multiprocessing import Pool
 
 def normalize_point_clouds(pc: np.ndarray) -> np.ndarray:
