@@ -49,7 +49,9 @@ def load_pointnet():
     model.to(device)
     model.eval()
 
-def get_pointnet_feature(points,  model, batch_size):
+    return model
+
+def get_pointnet_feature(points, model, batch_size):
     output_features = []
     batch_cnt =  int(math.ceil(len(points) / batch_size))
     for batch_index in range(batch_cnt):
