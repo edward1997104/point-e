@@ -4,6 +4,7 @@ from point_e.evals.fid_is import compute_statistics
 import torch
 from point_e.models.download import load_checkpoint
 from point_e.evals.pointnet2_cls_ssg import get_model
+import numpy as np
 
 def normalize_point_clouds(pc: np.ndarray) -> np.ndarray:
     centroids = np.mean(pc, axis=1, keepdims=True)
