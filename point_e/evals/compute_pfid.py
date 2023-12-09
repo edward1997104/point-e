@@ -10,7 +10,7 @@ import trimesh
 import os
 import math
 from multiprocessing import Pool
-import pandas
+import pandas as pd
 
 def normalize_point_clouds(pc: np.ndarray) -> np.ndarray:
     centroids = np.mean(pc, axis=1, keepdims=True)
