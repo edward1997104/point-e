@@ -40,7 +40,7 @@ def sample_pointcloud(args):
 
 
 def load_pointnet():
-    state_dict = load_checkpoint("pointnet", device=torch.device("cpu"), cache_dir=cache_dir)[
+    state_dict = load_checkpoint("pointnet", device=torch.device("cpu"), cache_dir=args.cache_dir)[
         "model_state_dict"
     ]
     model = get_model(num_class=40, normal_channel=False, width_mult=2)
