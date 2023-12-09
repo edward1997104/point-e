@@ -8,6 +8,7 @@ import numpy as np
 import glob
 import trimesh
 import os
+from multiprocessing import Pool
 
 def normalize_point_clouds(pc: np.ndarray) -> np.ndarray:
     centroids = np.mean(pc, axis=1, keepdims=True)
@@ -21,16 +22,19 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 class Args:
     gt_folder : str
     pred_folder : str
+    workers : int
     batch_size = 256
     use_aligned: bool = False
 
 args = tyro.cli(Args)
 
-def sample_pointcloud(mesh_path, output_point_path, point_num):
+def sample_pointcloud(args):
+    mesh_path, output_point_path, point_num = args
     mesh = trimesh.load(mesh_path)
     points, _ = trimesh.sample.sample_surface(mesh, point_num)
     points = normalize_point_clouds(points)
     np.save(output_point_path, points)
+    print(f"{output_point_path} done...")
     return points
 
 
@@ -53,6 +57,7 @@ def get_pointnet_feature(points,  model, batch_size):
     output_features = np.concatenate(output_features, axis=0)
     return output_features
 
+
 if __name__ == '__main__':
     gt_obj_paths = glob.glob(os.path.join(args.gt_folder, '*.obj'), recursive=False)
 
@@ -68,6 +73,20 @@ if __name__ == '__main__':
 
     # sampling point clouds
     print("Sampling point clouds...")
+    args_inputs = []
+    for item in item_to_process:
+        gt_obj_path, pred_path = item
+        id = os.path.basename(gt_obj_path)[:-4]
+        postfix = '_aligned.obj' if args.use_aligned else '.obj'
+        pred_path = os.path.join(args.pred_folder, f'{id}{postfix}')
+        gt_point_path = os.path.join(args.gt_folder, f'{id}.npy')
+        pred_point_path = os.path.join(args.pred_folder, f'{id}.npy')
+        args_inputs.append((gt_obj_path, gt_point_path, 4096))
+        args_inputs.append((pred_path, pred_point_path, 4096))
+
+    pool = Pool(args.workers)
+    pool.map(sample_pointcloud, args_inputs)
+
     result_gt_points, result_pred_points = [], []
     for item in item_to_process:
         gt_obj_path, pred_path = item
