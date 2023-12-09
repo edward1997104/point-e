@@ -24,7 +24,7 @@ class Args:
     gt_folder : str
     pred_folder : str
     workers : int
-    batch_size : int = 256
+    batch_size : int = 32
     use_aligned: bool = False
     cache_dir: str = './cache_pointnet'
 
