@@ -18,10 +18,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 class Args:
     gt_folder : str
     pred_folder : str
-    workers: int
-    scale_ratio: float = 0.9
     batch_size = 256
-    use_normalize: bool = True
     use_aligned: bool = False
 
 args = tyro.cli(Args)
