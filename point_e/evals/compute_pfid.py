@@ -6,6 +6,7 @@ from point_e.models.download import load_checkpoint
 from point_e.evals.pointnet2_cls_ssg import get_model
 import numpy as np
 import glob
+import trimesh
 import os
 
 def normalize_point_clouds(pc: np.ndarray) -> np.ndarray:
