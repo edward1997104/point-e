@@ -10,6 +10,7 @@ import trimesh
 import os
 import math
 from multiprocessing import Pool
+import pandas
 
 def normalize_point_clouds(pc: np.ndarray) -> np.ndarray:
     centroids = np.mean(pc, axis=1, keepdims=True)
@@ -74,6 +75,10 @@ if __name__ == '__main__':
             item_to_process.append((gt_obj_path, pred_path))
 
     print(f"Found {len(item_to_process)} items to process")
+
+    if os.path.exists(f'{args.pred_folder}/pfid.csv'):
+        print("iou.csv already exists, skipping")
+        exit()
 
     # sampling point clouds
     print("Sampling point clouds...")
@@ -142,7 +147,17 @@ if __name__ == '__main__':
     pred_stats = compute_statistics(result_pred_features)
 
     # compute pfid
-    print(f"P-FID: {gt_stats.frechet_distance(pred_stats)}")
+    results = []
+    avg_pfid = gt_stats.frechet_distance(pred_stats)
+    print(f"P-FID: {avg_pfid}")
+
+    results.append(('avg_pfid', avg_pfid))
+
+    # save results
+    df = pd.DataFrame(results, columns=['ID', 'Value'])
+    df.to_csv(f'{args.pred_folder}/pfid.csv', index=False)
+
+    print(f"Processed {len(item_to_process)} items")
 
 
 
