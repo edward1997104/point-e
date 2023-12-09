@@ -139,8 +139,10 @@ if __name__ == '__main__':
     # get pointnet feature
     print("Extracting gt pointnet feature...")
     result_gt_features = get_pointnet_feature(result_gt_points, pointnet, args.batch_size)
+    print("result_gt_features.shape", result_gt_features.size())
     print("Extracting pred pointnet feature...")
     result_pred_features = get_pointnet_feature(result_pred_points, pointnet, args.batch_size)
+    print("result_pred_features.shape", result_pred_features.size())
 
     # compute pfid
     gt_stats = compute_statistics(result_gt_features)
