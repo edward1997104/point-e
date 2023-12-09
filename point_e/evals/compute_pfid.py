@@ -150,7 +150,7 @@ if __name__ == '__main__':
 
     # compute pfid
     results = []
-    avg_pfid = gt_stats.frechet_distance(pred_stats)
+    avg_pfid = pred_stats.frechet_distance(gt_stats)
     print(f"P-FID: {avg_pfid}")
 
     results.append(('avg_pfid', avg_pfid))
