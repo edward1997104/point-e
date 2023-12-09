@@ -134,7 +134,7 @@ if __name__ == '__main__':
     print("result_pred_features.shape", result_pred_prediction.shape)
 
     # compute pfid
-    avg_pis = compute_inception_score(preds)
+    avg_pis = compute_inception_score(result_pred_prediction)
     print(f"P-PIS: {avg_pis}")
 
     results.append(('avg_pis', avg_pis))
