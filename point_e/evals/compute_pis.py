@@ -58,9 +58,9 @@ def get_pointnet_pred(points, model, batch_size):
     batch_cnt =  int(math.ceil(len(points) / batch_size))
     for batch_index in range(batch_cnt):
         batch_feature = model(points[batch_index * batch_size: (batch_index + 1) * batch_size], features=True)
-        output_features.append(batch_feature[0].cpu().detach().numpy())
+        output_features.append(batch_feature[0].exp().cpu().detach().numpy())
         print(f"batch {batch_index} done")
-    output_features = np.concatenate(output_features.exp(), axis=0)
+    output_features = np.concatenate(output_features, axis=0)
     return output_features
 
 
