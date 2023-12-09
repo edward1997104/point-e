@@ -25,6 +25,7 @@ class Args:
     workers : int
     batch_size = 256
     use_aligned: bool = False
+    cache_dir: str = './cache_pointnet'
 
 args = tyro.cli(Args)
 
