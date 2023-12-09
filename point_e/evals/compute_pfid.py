@@ -82,8 +82,10 @@ if __name__ == '__main__':
         pred_path = os.path.join(args.pred_folder, f'{id}{postfix}')
         gt_point_path = os.path.join(args.gt_folder, f'{id}.npy')
         pred_point_path = os.path.join(args.pred_folder, f'{id}.npy')
-        args_inputs.append((gt_obj_path, gt_point_path, 4096))
-        args_inputs.append((pred_path, pred_point_path, 4096))
+        if not os.path.exists(gt_point_path):
+            args_inputs.append((gt_obj_path, gt_point_path, 4096))
+        if not os.path.exists(pred_point_path):
+            args_inputs.append((pred_path, pred_point_path, 4096))
 
     pool = Pool(args.workers)
     pool.map(sample_pointcloud, args_inputs)
